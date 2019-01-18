@@ -6,22 +6,12 @@
 import gulp from "gulp";
 import shell from "gulp-shell";
 import rimraf from "rimraf";
-import run from "run-sequence";
-import watch from "gulp-watch";
-import server from "gulp-live-server";
+import nodemon from "gulp-nodemon";
 
 const paths = {
   src: ["./src/**/*.js"],
   destination: "./dist",
 };
-
-gulp.task("default", (cb) => {
-  run("server", "build", "watch", cb);
-});
-
-gulp.task("build", (cb) => {
-  run("clean", "lint", "babel", "restart", cb);
-});
 
 gulp.task("clean", (cb) => {
   rimraf(paths.destination, cb);
@@ -31,16 +21,16 @@ gulp.task("babel", shell.task(["babel --copy-files --out-dir dist --ignore *.tes
 
 gulp.task("lint", shell.task(["eslint src/**"], { ignoreErrors: true }));
 
-let express;
+gulp.task("build", gulp.series("clean", "lint", "babel"));
 
-gulp.task("server", () => {
-  express = server.new(paths.destination);
+gulp.task("nodemon", (done) => {
+  nodemon({
+    script: paths.destination,
+    ext: "js",
+    env: { NODE_ENV: "development" },
+    tasks: ["build"],
+    done,
+  });
 });
 
-gulp.task("restart", () => {
-  express.start.bind(express)();
-});
-
-gulp.task("watch", () => watch(paths.src, () => {
-  gulp.start("build");
-}));
+gulp.task("default", gulp.series("build", "nodemon"));
