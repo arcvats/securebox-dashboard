@@ -1,6 +1,6 @@
 /**
  * @file Integration and automation of babel and eslint
- * @author Archit
+ * @author Archit <archit5793@gmail.com>
  */
 
 import gulp from "gulp";

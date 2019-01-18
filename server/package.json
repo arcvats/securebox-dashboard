@@ -6,7 +6,7 @@
   "scripts": {
     "start": "gulp",
     "build": "gulp build",
-    "create-token": "node ./build/create-token",
+    "create-token": "node ./dist/create-token",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Archit <archit5793@gmail.com>",
@@ -14,6 +14,8 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^10.0.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "eslint": "^5.12.0",
     "eslint-config-airbnb": "^17.1.0",
