@@ -21,6 +21,9 @@ const UserSchema = mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  user_token: {
+    type: String,
+  },
 });
 
 UserSchema.pre("save", function save(next) {
