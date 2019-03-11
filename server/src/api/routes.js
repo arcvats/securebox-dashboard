@@ -4,13 +4,11 @@
  */
 
 import express from "express";
-import ConfigController from "./controllers/ConfigController";
+import SocketController from "./controllers/SocketController";
 
-export default () => {
+export default (mqtt, io) => {
   const router = express.Router();
-  router
-    .route("/config")
-    .post(ConfigController.loadConfig)
-    .put(ConfigController.updateConfig);
+  const socketController = SocketController(mqtt, io);
+  router.get("/", socketController.home);
   return router;
 };
