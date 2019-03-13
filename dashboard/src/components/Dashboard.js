@@ -14,9 +14,6 @@ class Dashboard extends React.Component {
     socket.on("disconnect", () => {
       this.setState({ socketConnected: false });
     });
-    // socket.on("cpu", data => {
-    //   console.log(data);
-    // });
   }
   render() {
     return (
@@ -32,15 +29,31 @@ class Dashboard extends React.Component {
             />
           </div>
           <div className="column">
-            <Card />
+            <Card
+              type={this.state.socketConnected ? "memory" : "nothing"}
+              anomalyType={
+                this.state.socketConnected ? "memoryAnomaly" : "nothing"
+              }
+              socketConnection={socket}
+            />
           </div>
         </div>
         <div className="columns">
           <div className="column">
-            <Card />
+            <Card
+              type={this.state.socketConnected ? "eventloop" : "nothing"}
+              anomalyType={
+                this.state.socketConnected ? "eventloopAnomaly" : "nothing"
+              }
+              socketConnection={socket}
+            />
           </div>
           <div className="column">
-            <Card />
+            <Card
+              type={this.state.socketConnected ? "gc" : "nothing"}
+              anomalyType={this.state.socketConnected ? "gcAnomaly" : "nothing"}
+              socketConnection={socket}
+            />
           </div>
         </div>
       </div>
