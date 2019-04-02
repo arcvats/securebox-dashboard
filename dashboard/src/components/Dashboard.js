@@ -1,59 +1,75 @@
 import React from "react";
 import Card from "./Card";
-import axios from "axios";
-import io from "socket.io-client";
-
-const socket = io.connect("http://localhost:9000");
+import StackTrace from "./StackTrace";
+import Timer from "./Timer";
+import "./Dashboard.css";
 
 class Dashboard extends React.Component {
-  state = { socketConnected: false };
-  componentDidMount() {
-    socket.on("connect", () => {
-      this.setState({ socketConnected: true });
-    });
-    socket.on("disconnect", () => {
-      this.setState({ socketConnected: false });
-    });
-  }
   render() {
     return (
       <div className="section cards-container">
         <div className="columns">
           <div className="column">
+            <h2>
+              <i className="fas fa-microchip" /> &nbsp;CPU Usage
+            </h2>
             <Card
-              type={this.state.socketConnected ? "cpu" : "nothing"}
+              type={this.props.socketConnected ? "cpu" : "nothing"}
               anomalyType={
-                this.state.socketConnected ? "cpuAnomaly" : "nothing"
+                this.props.socketConnected ? "cpuAnomaly" : "nothing"
               }
-              socketConnection={socket}
+              socketConnection={this.props.socketConnection}
             />
           </div>
           <div className="column">
+            <h2>
+              <i className="fas fa-memory" /> &nbsp;Memory Usage
+            </h2>
             <Card
-              type={this.state.socketConnected ? "memory" : "nothing"}
+              type={this.props.socketConnected ? "memory" : "nothing"}
               anomalyType={
-                this.state.socketConnected ? "memoryAnomaly" : "nothing"
+                this.props.socketConnected ? "memoryAnomaly" : "nothing"
               }
-              socketConnection={socket}
+              socketConnection={this.props.socketConnection}
             />
           </div>
         </div>
         <div className="columns">
           <div className="column">
+            <h2>
+              <i className="fas fa-circle-notch" /> &nbsp;Eventloop Usage
+            </h2>
             <Card
-              type={this.state.socketConnected ? "eventloop" : "nothing"}
+              type={this.props.socketConnected ? "eventloop" : "nothing"}
               anomalyType={
-                this.state.socketConnected ? "eventloopAnomaly" : "nothing"
+                this.props.socketConnected ? "eventloopAnomaly" : "nothing"
               }
-              socketConnection={socket}
+              socketConnection={this.props.socketConnection}
             />
           </div>
           <div className="column">
+            <h2>
+              <i className="fas fa-trash-alt" /> &nbsp;Garbage Collector Usage
+            </h2>
             <Card
-              type={this.state.socketConnected ? "gc" : "nothing"}
-              anomalyType={this.state.socketConnected ? "gcAnomaly" : "nothing"}
-              socketConnection={socket}
+              type={this.props.socketConnected ? "gc" : "nothing"}
+              anomalyType={this.props.socketConnected ? "gcAnomaly" : "nothing"}
+              socketConnection={this.props.socketConnection}
             />
+          </div>
+        </div>
+        <div className="columns">
+          <div className="column">
+            <h2>
+              <i className="fas fa-layer-group" /> &nbsp;Stack Trace
+            </h2>
+            <StackTrace socketConnection={this.props.socketConnection} />
+          </div>
+          <div className="column">
+            <h2>
+              <i className="fas fa-stopwatch" /> &nbsp;Time Trace
+            </h2>
+            <Timer socketConnection={this.props.socketConnection} />
           </div>
         </div>
       </div>

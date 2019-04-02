@@ -1,12 +1,24 @@
 import React from "react";
 import Dashboard from "./Dashboard";
+import "./Wrapper.css";
+import io from "socket.io-client";
+
+const socket = io.connect("http://localhost:9000");
 
 class Container extends React.Component {
-  state = { isMobile: false };
+  state = { isMobile: false, socketConnected: false };
+  componentDidMount() {
+    socket.on("connect", () => {
+      this.setState({ socketConnected: true });
+    });
+    socket.on("disconnect", () => {
+      this.setState({ socketConnected: false });
+    });
+  }
   render() {
     return (
       <main className="wrapper">
-        <header className="navbar is-fixed-top is-link">
+        <header className="navbar is-fixed-top">
           <div className="container">
             <div
               className={`navbar-brand ${
@@ -14,6 +26,7 @@ class Container extends React.Component {
               }`}
             >
               <a href="/" className="navbar-item">
+                <i className="fas fa-shield-alt" />
                 Securebox
               </a>
               <span className="navbar-burger burger">
@@ -40,7 +53,10 @@ class Container extends React.Component {
           </div>
         </header>
         <section className="section dashboard">
-          <Dashboard />
+          <Dashboard
+            socketConnection={socket}
+            socketConnected={this.state.socketConnected}
+          />
         </section>
       </main>
     );
