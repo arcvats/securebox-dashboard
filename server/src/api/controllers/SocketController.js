@@ -1,3 +1,4 @@
+import _ from "underscore";
 export default io => ({
   stackTrace(req, res) {
     const stackTrace = req.body.trace;
@@ -42,7 +43,9 @@ export default io => ({
   },
   audit(req, res) {
     if (req.body.audit) {
-      io.emit("audit", { audit: req.body.audit });
+      const advisories = req.body.audit.advisories;
+      const filteredAudit = _.groupBy(_.toArray(advisories), item=>item.severity);
+      io.emit("audit", { audit: filteredAudit, metadata: req.body.audit.metadata });
       res.send({ success: true });
     } else {
       res.send({ success: false });
