@@ -45,7 +45,7 @@ class ChartMemory extends React.Component {
     },
     chartOptions: {
       title: {
-        display: true,
+        display: false,
         text: "Memory Usage"
       },
       responsive: true,

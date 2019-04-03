@@ -43,7 +43,7 @@ class ChartEL extends React.Component {
     },
     lineChartOptions: {
       title: {
-        display: true,
+        display: false,
         text: "EventLoop Usage"
       },
       responsive: true,

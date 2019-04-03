@@ -32,7 +32,7 @@ class ChartCPU extends React.Component {
     },
     lineChartOptions: {
       title: {
-        display: true,
+        display: false,
         text: "CPU Usage"
       },
       responsive: true,

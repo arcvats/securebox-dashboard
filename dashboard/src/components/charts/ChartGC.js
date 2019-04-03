@@ -29,7 +29,7 @@ class ChartGC extends React.Component {
     },
     chartOptions: {
       title: {
-        display: true,
+        display: false,
         text: "Garbage Collector Usage"
       },
       responsive: true,

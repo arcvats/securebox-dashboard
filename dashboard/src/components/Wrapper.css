@@ -29,3 +29,12 @@ header.navbar .navbar-menu a {
 header.navbar .navbar-menu a:hover {
     color: #692db7;
 }
+
+header.navbar .navbar-menu a.button {
+    margin-top: 0.5em;
+    color: #692db7;
+}
+
+tr td{
+    cursor: pointer;
+}

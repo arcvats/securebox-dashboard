@@ -8,7 +8,6 @@ class Timer extends React.Component {
       const timers = this.state.timers;
       timers.push(data);
       this.setState({ timers });
-      console.log(timers);
     });
   }
   handleClick = e => {

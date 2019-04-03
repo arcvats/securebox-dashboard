@@ -1,12 +1,14 @@
 import React from "react";
-import "./Modal.css";
+import "./StackTraceModal.css";
 
 class StackTraceModal extends React.Component {
   render() {
     if (!this.props.data) {
       return (
         <div
-          className={`modal ${this.props.isModalActive ? "is-active" : null}`}
+          className={`modal stackTrace-modal ${
+            this.props.isModalActive ? "is-active" : null
+          }`}
         >
           <div className="modal-background" />
           <div className="modal-content">
@@ -25,11 +27,17 @@ class StackTraceModal extends React.Component {
       <p key={index}>{item}</p>
     ));
     return (
-      <div className={`modal ${this.props.isModalActive ? "is-active" : null}`}>
+      <div
+        className={`modal stackTrace-modal ${
+          this.props.isModalActive ? "is-active" : null
+        }`}
+      >
         <div className="modal-background" />
         <div className="modal-content">
           <div className="box">
-            {time}
+            <h3>Time</h3>
+            <p>{time}</p>
+            <h3>Stack Trace</h3>
             {items}
           </div>
         </div>

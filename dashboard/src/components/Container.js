@@ -2,11 +2,18 @@ import React from "react";
 import Dashboard from "./Dashboard";
 import "./Wrapper.css";
 import io from "socket.io-client";
+import AuditModal from "./AuditModal";
+import test from "./test";
 
 const socket = io.connect("http://localhost:9000");
 
 class Container extends React.Component {
-  state = { isMobile: false, socketConnected: false };
+  state = {
+    isMobile: false,
+    socketConnected: false,
+    auditData: test(),
+    isModalActive: false
+  };
   componentDidMount() {
     socket.on("connect", () => {
       this.setState({ socketConnected: true });
@@ -14,7 +21,17 @@ class Container extends React.Component {
     socket.on("disconnect", () => {
       this.setState({ socketConnected: false });
     });
+    socket.on("audit", data => {
+      this.setState({ auditData: data });
+    });
   }
+  handleAuditClick = () => {
+    if (this.state.isModalActive) {
+      this.setState({ isModalActive: false });
+    } else {
+      this.setState({ isModalActive: true });
+    }
+  };
   render() {
     return (
       <main className="wrapper">
@@ -40,6 +57,13 @@ class Container extends React.Component {
             className={`navbar-menu ${this.state.isMobile ? null : "is-acive"}`}
           >
             <div className="navbar-end">
+              <a
+                href="#"
+                className="navbar-item button is-rounded"
+                onClick={this.handleAuditClick}
+              >
+                View Audit
+              </a>
               <a href="/" className="navbar-item">
                 Dashboard
               </a>
@@ -56,6 +80,11 @@ class Container extends React.Component {
           <Dashboard
             socketConnection={socket}
             socketConnected={this.state.socketConnected}
+          />
+          <AuditModal
+            handleModal={this.handleAuditClick}
+            isModalActive={this.state.isModalActive}
+            data={this.state.auditData}
           />
         </section>
       </main>
