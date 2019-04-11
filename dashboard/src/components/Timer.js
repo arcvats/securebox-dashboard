@@ -1,12 +1,19 @@
 import React from "react";
 import TimerModal from "./TimerModal";
+import axios from "axios";
 
 class Timer extends React.Component {
   state = { timers: [], isModalActive: false, keyToModal: null };
   componentDidMount() {
+    axios.get("http://localhost:9000/timer").then(result => {
+      this.setState({ timers: result.data.data });
+    });
     this.props.socketConnection.on("timer", data => {
       const timers = this.state.timers;
-      timers.push(data);
+      if (timers.length > 4) {
+        timers.shift();
+        timers.push(data);
+      }
       this.setState({ timers });
     });
   }

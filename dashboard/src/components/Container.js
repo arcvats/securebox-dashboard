@@ -3,7 +3,7 @@ import Dashboard from "./Dashboard";
 import "./Wrapper.css";
 import io from "socket.io-client";
 import AuditModal from "./AuditModal";
-import test from "./test";
+import axios from "axios";
 
 const socket = io.connect("http://localhost:9000");
 
@@ -11,7 +11,7 @@ class Container extends React.Component {
   state = {
     isMobile: false,
     socketConnected: false,
-    auditData: test(),
+    auditData: null,
     isModalActive: false
   };
   componentDidMount() {
@@ -21,9 +21,14 @@ class Container extends React.Component {
     socket.on("disconnect", () => {
       this.setState({ socketConnected: false });
     });
-    socket.on("audit", data => {
-      this.setState({ auditData: data });
-    });
+    axios
+      .get("http://localhost:9000/audit", {})
+      .then(result => {
+        this.setState({ auditData: result.data.data[0] });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
   handleAuditClick = () => {
     if (this.state.isModalActive) {
@@ -58,7 +63,7 @@ class Container extends React.Component {
           >
             <div className="navbar-end">
               <a
-                href="#"
+                href="#/"
                 className="navbar-item button is-rounded"
                 onClick={this.handleAuditClick}
               >

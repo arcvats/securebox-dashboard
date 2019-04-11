@@ -1,12 +1,19 @@
 import React from "react";
 import StackTraceModal from "./StackTraceModal";
+import axios from "axios";
 
 class StackTrace extends React.Component {
   state = { traces: [], isModalActive: false, keyToModal: null };
   componentDidMount() {
+    axios.get("http://localhost:9000/stacktrace").then(result => {
+      this.setState({ traces: result.data.data });
+    });
     this.props.socketConnection.on("stacktrace", data => {
       const traces = this.state.traces;
-      traces.push(data);
+      if (traces.length > 4) {
+        traces.shift();
+        traces.push(data);
+      }
       this.setState({ traces });
     });
   }
